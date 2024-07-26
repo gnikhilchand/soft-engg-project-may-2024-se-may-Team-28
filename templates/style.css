@@ -1,0 +1,13 @@
+*{
+  margin: 0px;
+}
+#main, #canvas {
+  display: block;
+  margin: 5 auto;
+  border: 2px solid rgb(250, 5, 5);
+}
+#canvas {
+  width: 80;
+  margin: auto;
+  height: 800px;
+}

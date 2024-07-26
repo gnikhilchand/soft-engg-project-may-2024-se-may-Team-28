@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% include 'navbar.html' %}
+  <title>Library</title>
+  <script>
+    // Function to remove flash messages after 3 seconds
+    window.setTimeout(function() {
+        var alert = document.querySelector('.alert');
+        if (alert) {
+            alert.parentNode.removeChild(alert);
+        }
+    }, 3000); // 3000 milliseconds = 3 seconds
+  </script>
+</head>
+<body>
+  {% with messages = get_flashed_messages() %}
+      {% if messages %}
+          {% for message in messages %}
+              <div class="alert alert-success">{{ message }}</div>
+          {% endfor %}
+      {% endif %}
+  {% endwith %}
+  <h1>Welcome to The Portal</h1>
+  <p>Here's a list of things you can do:</p>
+  <ul>
+    <li>Search for cources</li>
+    <li>View all cources</li>
+    <!-- Add more items as needed -->
+  </ul>
+</body>
+</html>

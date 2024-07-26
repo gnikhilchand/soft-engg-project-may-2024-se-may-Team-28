@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'navbar.html' %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        li:hover {
+            background-color: #f9f9f9;
+        }
+        li a {
+            color: #337ab7;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+        li a:hover {
+            text-decoration: underline;
+        }
+        .alert {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            color: #31708f;
+            background-color: #d9edf7;
+            border-color: #bce8f1;
+        }
+        .alert-success {
+            color: #3c763d;
+            background-color: #dff0d8;
+            border-color: #d6e9c6;
+        }
+        a.add-category {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            background-color: #5cb85c;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a.add-category:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+    
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    {% if current_user.is_authenticated and current_user.role == 'admin' %}
+    <a href="{{ url_for('addcourse') }}" class="add-courses">Add Course</a>
+    {% endif %}
+    <h1>All Courses</h1>
+    <ul>
+        {% for course in courses %}
+            <li>
+                <strong>{{ course.name }}</strong> - {{ course.description }}
+                {% if current_user.is_authenticated and current_user.role == 'admin' %}
+                <a href="{{ url_for('editcourse', course_id=course.id) }}">Edit</a>
+                <a href="{{ url_for('deletecourse', course_id=course.id) }}">Delete</a>
+                {% endif %}
+                <a href="{{ url_for('assignments', course_id=course.id) }}">View Cources</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

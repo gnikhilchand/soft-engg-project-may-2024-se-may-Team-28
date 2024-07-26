@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        .navbar {
+            background-color: #d3dfe9; /* Navbar background color */
+            border: none; /* Remove border */
+            border-radius: 0; /* Remove border radius */
+            margin-bottom: 0; /* Remove margin bottom */
+        }
+        .navbar-brand {
+            color: #080404; /* Brand text color */
+            font-size: 24px; /* Brand font size */
+        }
+        .navbar-brand:hover {
+            color: #1ff103; /* Hover color for brand */
+        }
+        .navbar-nav > li > a {
+            color: #fff; /* Nav links color */
+            font-size: 16px; /* Nav links font size */
+            padding: 15px 20px; /* Nav links padding */
+        }
+        .navbar-nav > li.active > a,
+        .navbar-nav > li.active > a:focus,
+        .navbar-nav > li.active > a:hover {
+            background-color: #286090; /* Active nav link background color */
+        }
+        .navbar-nav > li > a:hover {
+            background-color: #286090; /* Hover background color for nav links */
+        }
+        .navbar-form {
+            margin-top: 10px; /* Adjust margin top for the search form */
+        }
+        .form-control {
+            border-radius: 0; /* Remove border radius for form control */
+        }
+        .btn-default {
+            background-color: #94b4d3; /* Button background color */
+            border-color: #08090a; /* Button border color */
+            border-radius: 0; /* Button border radius */
+        }
+        .btn-default:hover,
+        .btn-default:focus {
+            background-color: #090a0a; /* Hover and focus background color for buttons */
+            border-color: #06080a; /* Hover and focus border color for buttons */
+        }
+        .navbar-right {
+            margin-right: 0; /* Adjust margin right for navbar right section */
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{url_for('index')}}">Welcome to Course Portal</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+                <li><a href="{{url_for('courses')}}">Courses </a></li>
+                {% if current_user.is_authenticated and current_user.role == 'admin' %}
+                <li><a href="{{url_for('dashboard')}}">Instructor Profile</a></li>
+                {% endif %}
+                {% if current_user.is_authenticated and current_user.role == 'user' %}
+                <li><a href="{{url_for('userprofile')}}">student Profile</a></li>
+                {% endif %}
+            </ul>
+            <form class="navbar-form navbar-left" role="search" method="GET" action="{{url_for('searchbooks')}}">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search" name="query">
+                </div>
+                <button type="submit" class="btn btn-default">Search</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
+                <li><a href="{{url_for('register')}}">Register</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</body>
+</html>

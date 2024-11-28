@@ -33,7 +33,7 @@ This project is an enterprise-level backend application developed using the Flas
 ### Setup
 
 1. Clone the repository:
-git clone https://github.com/its-animay/ai_powered_be.git
+git clone https://github.com/gnikhilchand/soft-engg-project-may-2024-se-may-Team-28/tree/main/ai_powered_backend.git
 cd ai_powered_be
 
 2. Create and activate a virtual environment:

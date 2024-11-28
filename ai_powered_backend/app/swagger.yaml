@@ -1,0 +1,492 @@
+definitions: {}
+info:
+  description: powered by Flasgger
+  termsOfService: /tos
+  title: A swagger API
+  version: 0.0.1
+paths:
+  /api/generate_questions:
+    post:
+      description: This endpoint generates questions from the provided text.
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          properties:
+            text:
+              example: Enter the text from which questions should be generated.
+              type: string
+          type: object
+      responses:
+        '200':
+          description: Questions generated successfully
+          schema:
+            example:
+              questions:
+              - Question 1?
+              - Question 2?
+              - Question 3?
+            properties:
+              questions:
+                items:
+                  type: string
+                type: array
+            type: object
+        '400':
+          description: Bad Request
+          schema:
+            properties:
+              error:
+                example: Text is required
+                type: string
+            type: object
+      summary: Generate Questions from Text
+  /api/summarize:
+    post:
+      description: This endpoint summarizes the provided transcript.
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          properties:
+            transcript:
+              example: Enter the transcript text to be summarized.
+              type: string
+          type: object
+      responses:
+        '200':
+          description: Transcript summarized successfully
+          schema:
+            properties:
+              summary:
+                example: This is the summarized text of the transcript.
+                type: string
+            type: object
+        '400':
+          description: Bad Request
+          schema:
+            properties:
+              error:
+                example: Transcript is required
+                type: string
+            type: object
+      summary: Summarize Transcript
+  /assignments/:
+    get:
+      responses:
+        '200':
+          description: A list of assignments
+          schema:
+            items:
+              $ref: '#/definitions/Assignment'
+            type: array
+      summary: List all assignments
+    post:
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          properties:
+            description:
+              type: string
+            due_date:
+              format: date-time
+              type: string
+            title:
+              type: string
+          type: object
+      responses:
+        '201':
+          description: Assignment created
+          schema:
+            $ref: '#/definitions/Assignment'
+      summary: Create a new assignment
+  /assignments/{id}:
+    delete:
+      parameters:
+      - description: The assignment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        '204':
+          description: Assignment deleted successfully
+        '404':
+          description: Assignment not found
+          schema:
+            properties:
+              error:
+                example: Assignment not found
+                type: string
+            type: object
+      summary: Delete an assignment
+    get:
+      parameters:
+      - description: The assignment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        '200':
+          description: The assignment detail
+          schema:
+            $ref: '#/definitions/Assignment'
+        '404':
+          description: Assignment not found
+          schema:
+            properties:
+              error:
+                example: Assignment not found
+                type: string
+            type: object
+      summary: Get assignment detail
+    put:
+      parameters:
+      - description: The assignment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - in: body
+        name: body
+        required: true
+        schema:
+          properties:
+            description:
+              type: string
+            due_date:
+              format: date-time
+              type: string
+            title:
+              type: string
+          type: object
+      responses:
+        '200':
+          description: Assignment updated
+          schema:
+            $ref: '#/definitions/Assignment'
+        '404':
+          description: Assignment not found
+          schema:
+            properties:
+              error:
+                example: Assignment not found
+                type: string
+            type: object
+      summary: Update an assignment
+  /auth/login:
+    post:
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          properties:
+            password:
+              example: password123
+              type: string
+            username:
+              example: john_doe
+              type: string
+          type: object
+      responses:
+        '200':
+          description: User authenticated successfully
+          schema:
+            properties:
+              token:
+                example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+                type: string
+            type: object
+        '400':
+          description: Missing required fields
+          schema:
+            properties:
+              message:
+                example: Missing required fields
+                type: string
+            type: object
+        '401':
+          description: Invalid credentials
+          schema:
+            properties:
+              message:
+                example: Invalid credentials
+                type: string
+            type: object
+      summary: User Login
+  /auth/reset_password:
+    post:
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          properties:
+            email:
+              example: john.doe@example.com
+              type: string
+          type: object
+      responses:
+        '200':
+          description: Password reset instructions sent
+          schema:
+            properties:
+              message:
+                example: Password reset instructions sent to your email
+                type: string
+            type: object
+        '400':
+          description: Email is required
+          schema:
+            properties:
+              message:
+                example: Email is required
+                type: string
+            type: object
+        '500':
+          description: Error sending password reset email
+          schema:
+            properties:
+              message:
+                example: Error sending password reset email
+                type: string
+            type: object
+      summary: Request Password Reset
+  /auth/reset_password/{token}:
+    post:
+      parameters:
+      - description: The password reset token
+        in: path
+        name: token
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          properties:
+            new_password:
+              example: newpassword123
+              type: string
+          type: object
+      responses:
+        '200':
+          description: Password has been reset successfully
+          schema:
+            properties:
+              message:
+                example: Password has been reset successfully
+                type: string
+            type: object
+        '400':
+          description: Invalid or expired token
+          schema:
+            properties:
+              message:
+                example: Invalid or expired token
+                type: string
+            type: object
+      summary: Reset Password
+  /auth/signup:
+    post:
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          properties:
+            email:
+              example: john.doe@example.com
+              type: string
+            password:
+              example: password123
+              type: string
+            username:
+              example: john_doe
+              type: string
+          type: object
+      responses:
+        '201':
+          description: User created successfully
+          schema:
+            properties:
+              message:
+                example: User created successfully. Please verify your email.
+                type: string
+            type: object
+        '400':
+          description: Missing required fields
+          schema:
+            properties:
+              message:
+                example: Missing required fields
+                type: string
+            type: object
+        '500':
+          description: Error creating user
+          schema:
+            properties:
+              message:
+                example: Error creating user
+                type: string
+            type: object
+      summary: User Signup
+  /auth/verify/{token}:
+    get:
+      parameters:
+      - description: The verification token
+        in: path
+        name: token
+        required: true
+        type: string
+      responses:
+        '200':
+          description: Email verified successfully
+          schema:
+            properties:
+              message:
+                example: Email verified successfully
+                type: string
+            type: object
+        '400':
+          description: Invalid or expired token
+          schema:
+            properties:
+              message:
+                example: Invalid or expired token
+                type: string
+            type: object
+      summary: Verify User Email
+  /courses/:
+    get:
+      responses:
+        '200':
+          description: A list of all courses
+          schema:
+            items:
+              $ref: '#/definitions/Course'
+            type: array
+    post:
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/Course'
+      responses:
+        '201':
+          description: Course created successfully
+          schema:
+            $ref: '#/definitions/Course'
+  /courses/{id}:
+    delete:
+      parameters:
+      - description: The ID of the course to delete
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        '204':
+          description: Course deleted successfully
+        '404':
+          description: Course not found
+    get:
+      parameters:
+      - description: The ID of the course to retrieve
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        '200':
+          description: The course details
+          schema:
+            $ref: '#/definitions/Course'
+        '404':
+          description: Course not found
+    put:
+      parameters:
+      - description: The ID of the course to update
+        in: path
+        name: id
+        required: true
+        type: integer
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/Course'
+      responses:
+        '200':
+          description: Course updated successfully
+          schema:
+            $ref: '#/definitions/Course'
+        '404':
+          description: Course not found
+  /mid_user/mid_user_protected:
+    get:
+      description: This route is protected and only accessible to users with the role
+        of "mid_user".
+      responses:
+        '200':
+          description: Success
+          schema:
+            properties:
+              message:
+                example: This is a mid_user protected route
+                type: string
+            type: object
+        '401':
+          description: Unauthorized
+      summary: Mid User Protected Route
+  /superuser/superuser_protected:
+    get:
+      description: This endpoint is protected and can only be accessed by superusers.
+      responses:
+        '200':
+          description: Access granted to superuser
+          schema:
+            properties:
+              message:
+                example: This is a superuser protected route
+                type: string
+            type: object
+        '403':
+          description: Forbidden - User does not have the required role
+          schema:
+            properties:
+              message:
+                example: Forbidden
+                type: string
+            type: object
+      summary: Superuser Protected Route
+  /user/user_protected:
+    get:
+      description: This endpoint is protected and can only be accessed by users with
+        the user role.
+      responses:
+        '200':
+          description: Access granted to user
+          schema:
+            properties:
+              message:
+                example: This is a user protected route
+                type: string
+            type: object
+        '403':
+          description: Forbidden - User does not have the required role
+          schema:
+            properties:
+              message:
+                example: Forbidden
+                type: string
+            type: object
+      summary: User Protected Route
+swagger: '2.0'

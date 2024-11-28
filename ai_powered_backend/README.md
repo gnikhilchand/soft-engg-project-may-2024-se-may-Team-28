@@ -34,7 +34,7 @@ This project is an enterprise-level backend application developed using the Flas
 
 1. Clone the repository:
 git clone https://github.com/gnikhilchand/soft-engg-project-may-2024-se-may-Team-28/tree/main/ai_powered_backend.git
-cd ai_powered_be
+cd ai_powered_backend
 
 2. Create and activate a virtual environment:
 python -m venv .venv

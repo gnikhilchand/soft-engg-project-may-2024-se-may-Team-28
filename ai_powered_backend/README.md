@@ -34,22 +34,23 @@ This project is an enterprise-level backend application developed using the Flas
 
 1. Clone the repository:
 git clone https://github.com/gnikhilchand/soft-engg-project-may-2024-se-may-Team-28/tree/main/ai_powered_backend.git
+
 cd ai_powered_backend
 
-2. Create and activate a virtual environment:
+3. Create and activate a virtual environment:
 python -m venv .venv
 source .venv/bin/activate
 
-3. Install the dependencies:
+4. Install the dependencies:
 pip install -r requirements.txt
 
-4. Set up the environment variables:
+5. Set up the environment variables:
 Create a `.env` file with the necessary configurations (e.g., database URL, secret keys).
 
-5. Apply database migrations:
+6. Apply database migrations:
 flask db upgrade
 
-6. Run the application:
+7. Run the application:
 python run.py
 Copy
 ## Database Migrations
